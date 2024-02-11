@@ -11,6 +11,11 @@ const resolvers = {
             }
             throw new AuthenticationError('Not logged in!');
         },
+        searchBooks: async (parent, { searchTerm }, context) => {
+            // Implement search functionality here
+            const books = await Book.find({ $text: { $search: searchTerm } });
+            return books;
+        }
     },
 
     Mutation: {
@@ -30,13 +35,11 @@ const resolvers = {
             const token = signToken(user);
             return { token, user };
         },
-
         addUser: async (parent, args) => {
             const user = await User.create(args);
             const token = signToken(user);
             return { token, user };
         },
-
         saveBook: async (parent, { bookData }, context) => {
             if (context.user) {
                 const updatedUser = await User.findOneAndUpdate(
@@ -49,6 +52,18 @@ const resolvers = {
             }
             throw new AuthenticationError('You need to be logged in to save books!');
         },
+        removeBook: async (parent, { bookId }, context) => {
+            if (context.user) {
+                const updatedUser = await User.findOneAndUpdate(
+                    { _id: context.user._id },
+                    { $pull: { savedBooks: { bookId } } }, // Remove book from savedBooks array
+                    { new: true }
+                ).populate('savedBooks');
+
+                return updatedUser;
+            }
+            throw new AuthenticationError('You need to be logged in to remove books!');
+        }
     },
 };
 

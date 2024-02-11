@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { useMutation } from '@apollo/client';
 import { SAVE_BOOK } from "../../../server/schemas/mutations";
 
@@ -8,17 +9,36 @@ const SearchBooks = () => {
   const [saveBook] = useMutation(SAVE_BOOK);
 
   const handleSearch = async () => {
-    // Perform search and update searchResults state
+    console.log('Before search');
+    try {
+      const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${searchTerm}`);
+      console.log('Search results:', response.data.items);
+      setSearchResults(response.data.items || []); // Update searchResults state with fetched data
+    } catch (error) {
+      console.error('Error fetching search results:', error);
+      // Add logic to handle error
+    }
+    console.log('After search');
   };
+  
 
-  const handleSaveBook = async (bookId) => {
+  const handleSaveBook = async (book) => {
     try {
       await saveBook({
-        variables: { bookData: { bookId } }
+        variables: {
+          bookData: {
+            bookId: book.id,
+            authors: book.volumeInfo.authors,
+            title: book.volumeInfo.title,
+            description: book.volumeInfo.description,
+            image: book.volumeInfo.imageLinks.thumbnail,
+            link: book.volumeInfo.previewLink
+          }
+        }
       });
       // Add logic to update state or display message on success
     } catch (error) {
-      console.error(error);
+      console.error('Error saving book:', error);
       // Add logic to handle error
     }
   };
@@ -35,10 +55,13 @@ const SearchBooks = () => {
 
       {/* Render search results here */}
       {searchResults.map((book) => (
-        <div key={book.bookId}>
-          <h3>{book.title}</h3>
-          {/* Add additional book details as needed */}
-          <button onClick={() => handleSaveBook(book.bookId)}>Save</button>
+        <div key={book.id}>
+          <h3>{book.volumeInfo.title}</h3>
+          <p><strong>Authors:</strong> {book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'N/A'}</p>
+          <p><strong>Description:</strong> {book.volumeInfo.description ? book.volumeInfo.description : 'N/A'}</p>
+          {book.volumeInfo.imageLinks && <img src={book.volumeInfo.imageLinks.thumbnail} alt="Book cover" />}
+          <a href={book.volumeInfo.previewLink} target="_blank" rel="noopener noreferrer">Preview</a>
+          <button onClick={() => handleSaveBook(book)}>Save</button>
         </div>
       ))}
     </div>

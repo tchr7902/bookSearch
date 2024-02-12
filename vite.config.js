@@ -19,6 +19,7 @@ export default defineConfig({
     }
   },
   build: {
+    outDir: 'build', // Specify the output directory for built assets
     rollupOptions: {
       input: {
         // Specify the entry points for both client and server-side code

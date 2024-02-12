@@ -20,7 +20,7 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      input: '/client/index.js', // Correctly specify the entry point for client-side code
+      input: '/client/src/main.jsx', // Correctly specify the entry point for client-side code
       external: ['graphql-tag'],
     },
   },

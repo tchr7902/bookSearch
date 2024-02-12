@@ -1,6 +1,6 @@
-const { User, Book } = require('../models');
-const { AuthenticationError } = require('apollo-server-express');
-const { signToken } = require('../utils/auth');
+import { User, Book } from '../models.js';
+import { AuthenticationError } from 'apollo-server-express';
+import { signToken } from '../utils/auth.js';
 
 const resolvers = {
     Query: {
@@ -67,4 +67,4 @@ const resolvers = {
     },
 };
 
-module.exports = resolvers;
+export { resolvers };

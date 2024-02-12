@@ -1,8 +1,8 @@
-const express = require('express');
-const { ApolloServer } = require('apollo-server-express');
-const typeDefs = require('./schemas/typeDefs');
-const resolvers = require('./schemas/resolvers');
-const connectToDatabase = require('./config/connection');
+import express from 'express';
+import { ApolloServer } from 'apollo-server-express';
+import typeDefs from './schemas/typeDefs.js';
+import resolvers from './schemas/resolvers.js';
+import { connectToDatabase } from './config/connection.js';
 
 async function startApolloServer() {
   const app = express();

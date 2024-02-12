@@ -1,6 +1,5 @@
-import { gql } from 'graphql';
-
-export const GET_ME = gql`
+// Define the GraphQL query as a plain string
+const GET_ME = `
   query me {
     me {
       _id
@@ -17,3 +16,6 @@ export const GET_ME = gql`
     }
   }
 `;
+
+// Export the query string
+export { GET_ME };

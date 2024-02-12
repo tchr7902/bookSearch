@@ -1,6 +1,4 @@
-import { gql } from 'graphql';
-
-const typeDefs = gql`
+const typeDefs = `
     type User {
         _id: ID!
         username: String!

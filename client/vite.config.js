@@ -22,9 +22,7 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      // Remove @apollo/client from external
       external: ['axios'],
-      outDir: 'dist',
     }
   }
 });

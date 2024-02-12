@@ -1,7 +1,5 @@
-// vite.config.js
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
@@ -19,14 +17,14 @@ export default defineConfig({
   resolve: {
     alias: {
       // Add an alias for react-router-dom to resolve module paths
-      'react-router-dom': path.resolve(__dirname, 'node_modules/react-router-dom'),
+      'react-router-dom': 'react-router-dom',
     },
   },
   build: {
     rollupOptions: {
-      external: ['axios', '@apollo/client'],
+      // Remove @apollo/client from external
+      external: ['axios'],
       outDir: 'dist',
-
     }
   }
 });

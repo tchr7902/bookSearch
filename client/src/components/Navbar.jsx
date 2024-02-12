@@ -1,18 +1,25 @@
+// Navbar.jsx
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // Importing useNavigate
 import { Navbar, Nav, Container, Modal, Tab, Form, Button } from 'react-bootstrap';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 
 const NavbarComponent = () => {
   const [showModal, setShowModal] = useState(false);
+  const [activeTab, setActiveTab] = useState('login'); // State to track active tab
   const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
 
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm.trim()) {
-      window.location.href = `/search?q=${encodeURIComponent(searchTerm)}`; // Redirect to search page with query parameter
+      navigate(`/search?q=${encodeURIComponent(searchTerm)}`); // Using navigate instead of useHistory.push
     }
+  };
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
   };
 
   return (
@@ -46,9 +53,16 @@ const NavbarComponent = () => {
         onHide={() => setShowModal(false)}
         aria-labelledby='login-signup-modal'
       >
-        <Tab.Container defaultActiveKey='login'>
+        <Tab.Container activeKey={activeTab} onSelect={handleTabChange}>
           <Modal.Header closeButton>
-            <Modal.Title id='login-signup-modal'>Login / Sign Up</Modal.Title>
+            <Nav variant="tabs">
+              <Nav.Item>
+                <Nav.Link eventKey="login">Login</Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Nav.Link eventKey="signup">Sign Up</Nav.Link>
+              </Nav.Item>
+            </Nav>
           </Modal.Header>
           <Modal.Body>
             <Tab.Content>

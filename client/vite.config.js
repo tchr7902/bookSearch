@@ -1,6 +1,7 @@
 // vite.config.js
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
@@ -17,7 +18,8 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      // Add any necessary aliases here
-    }
-  }
+      // Add an alias for react-router-dom to resolve module paths
+      'react-router-dom': path.resolve(__dirname, 'node_modules/react-router-dom'),
+    },
+  },
 });

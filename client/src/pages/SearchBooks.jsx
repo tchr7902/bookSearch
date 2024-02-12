@@ -1,9 +1,12 @@
+// SearchBooks.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useMutation } from '@apollo/client';
+import { useHistory } from 'react-router-dom'; // Import useHistory
 import { SAVE_BOOK } from "../../../server/schemas/mutations";
 
 const SearchBooks = () => {
+  const history = useHistory(); // Initialize useHistory
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [saveBook] = useMutation(SAVE_BOOK);

@@ -10,8 +10,10 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "devDependencies": {
+    "@apollo/client":"^3.9.4"
+  },
   "dependencies": {
-    "@apollo/client": "^3.9.4",
     "@graphql-tools/load-files": "^7.0.0",
     "bcrypt": "^4.0.1",
     "express": "^4.17.1",

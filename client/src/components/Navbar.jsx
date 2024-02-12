@@ -7,6 +7,7 @@ import SearchBooks from '../pages/SearchBooks';
 import { useMutation } from '@apollo/client';
 import { SAVE_BOOK } from "../../../server/schemas/mutations";
 import axios from 'axios'; // Import axios for making HTTP requests
+import Auth from '../utils/auth'; // Import Auth for token handling
 import '../App.css'; // Import custom styles
 
 const NavbarComponent = () => {
@@ -47,7 +48,8 @@ const NavbarComponent = () => {
             image: book.volumeInfo.imageLinks.thumbnail,
             link: book.volumeInfo.previewLink
           }
-        }
+        },
+        context: { headers: { Authorization: `Bearer ${Auth.getToken()}` }} // Add token to the mutation context
       });
     } catch (error) {
       console.error('Error saving book:', error);
@@ -58,13 +60,13 @@ const NavbarComponent = () => {
     <>
       <Navbar bg='dark' variant='dark' expand='lg'>
         <Container fluid>
-          <Navbar.Brand as={Link} to='/' className="brand">
+          <Navbar.Brand as={Link} to='/'>
             Google Books Search
           </Navbar.Brand>
           <Navbar.Toggle aria-controls='navbar' />
           <Navbar.Collapse id='navbar' className='d-flex flex-row-reverse'>
             <Nav className='ml-auto d-flex'>
-              <Form inline onSubmit={handleSearch} className="search-form">
+              <Form inline="true" onSubmit={handleSearch} className="search-form">
                 <Form.Control
                   type="text"
                   placeholder="Search books"

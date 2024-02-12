@@ -108,30 +108,3 @@
   text-decoration: underline;
   color: #0056b3; /* Darker blue on hover */
 }
-
-/* Style for brand */
-.brand {
-  font-size: 1.5rem;
-}
-
-/* Style for search form */
-.search-form {
-  margin-left: 10px; /* Add left margin */
-  margin-bottom: 10px;
-}
-
-/* Style for search input */
-.search-input {
-  width: 200px; /* Adjust width as needed */
-}
-
-/* Style for search button */
-.search-button {
-  margin-left: 10px;
-}
-
-/* Style for nav links */
-.nav-link {
-  color: #fff;
-  margin-left: 10px;
-}

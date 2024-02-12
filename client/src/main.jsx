@@ -1,3 +1,4 @@
+import React from 'react';
 import ReactDOM from 'react-dom'; // Add this line to import ReactDOM
 
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';

@@ -1,4 +1,5 @@
-import { User, Book } from '../models.js';
+import User from '../models/User.js';
+import Book from '../models/Book.js';
 import { AuthenticationError } from 'apollo-server-express';
 import { signToken } from '../utils/auth.js';
 
@@ -67,4 +68,4 @@ const resolvers = {
     },
 };
 
-export { resolvers };
+export default resolvers;

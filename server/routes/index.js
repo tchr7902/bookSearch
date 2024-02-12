@@ -8,7 +8,7 @@ router.use('/api', apiRoutes);
 
 // Serve up React front-end in production
 router.use((req, res) => {
-  res.sendFile(path.join(__dirname, '../../client/build/index.html'));
+  res.sendFile(path.join(__dirname, '../../client/dist/index.html'));
 });
 
 export default router;

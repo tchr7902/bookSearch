@@ -1,33 +1,32 @@
-// SearchBooks.jsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useMutation } from '@apollo/client';
-import { useHistory } from 'react-router-dom'; // Import useHistory
 import { SAVE_BOOK } from "../../../server/schemas/mutations";
+import '../App.css';
 
-const SearchBooks = () => {
-  const history = useHistory(); // Initialize useHistory
-  const [searchTerm, setSearchTerm] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
-  const [saveBook] = useMutation(SAVE_BOOK);
+const SearchBooks = ({ searchTerm, searchResults, setSearchResults }) => {
+  const [saveBookMutation] = useMutation(SAVE_BOOK);
+  const [expandedBookId, setExpandedBookId] = useState(null); // State to track expanded book ID
 
-  const handleSearch = async () => {
-    console.log('Before search');
-    try {
-      const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${searchTerm}`);
-      console.log('Search results:', response.data.items);
-      setSearchResults(response.data.items || []); // Update searchResults state with fetched data
-    } catch (error) {
-      console.error('Error fetching search results:', error);
-      // Add logic to handle error
-    }
-    console.log('After search');
-  };
-  
+  useEffect(() => {
+    const fetchSearchResults = async () => {
+      if (searchTerm.trim()) {
+        try {
+          const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${searchTerm}`);
+          setSearchResults(response.data.items || []);
+        } catch (error) {
+          console.error('Error fetching search results:', error);
+        }
+      }
+    };
+
+    fetchSearchResults();
+
+  }, [searchTerm, setSearchResults]);
 
   const handleSaveBook = async (book) => {
     try {
-      await saveBook({
+      await saveBookMutation({
         variables: {
           bookData: {
             bookId: book.id,
@@ -39,32 +38,38 @@ const SearchBooks = () => {
           }
         }
       });
-      // Add logic to update state or display message on success
     } catch (error) {
       console.error('Error saving book:', error);
-      // Add logic to handle error
     }
   };
 
-  return (
-    <div>
-      <input
-        type="text"
-        placeholder="Search books"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      <button onClick={handleSearch}>Search</button>
+  const toggleDescription = (bookId) => {
+    setExpandedBookId(expandedBookId === bookId ? null : bookId);
+  };
 
-      {/* Render search results here */}
-      {searchResults.map((book) => (
-        <div key={book.id}>
-          <h3>{book.volumeInfo.title}</h3>
-          <p><strong>Authors:</strong> {book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'N/A'}</p>
-          <p><strong>Description:</strong> {book.volumeInfo.description ? book.volumeInfo.description : 'N/A'}</p>
-          {book.volumeInfo.imageLinks && <img src={book.volumeInfo.imageLinks.thumbnail} alt="Book cover" />}
-          <a href={book.volumeInfo.previewLink} target="_blank" rel="noopener noreferrer">Preview</a>
-          <button onClick={() => handleSaveBook(book)}>Save</button>
+  return (
+    <div className="search-results">
+      {/* Render search results if available */}
+      {searchResults && searchResults.map((book) => (
+        <div key={book.id} className="search-card">
+          <h3 className="book-title">{book.volumeInfo.title}</h3>
+          <p className="book-authors"><strong>Authors:</strong> {book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'N/A'}</p>
+          {/* Collapsible description */}
+          <div className="book-description">
+            <strong>Description:</strong>
+            {expandedBookId === book.id ? (
+              <>
+                <p>{book.volumeInfo.description ? book.volumeInfo.description : 'N/A'}</p>
+                <button className="toggle-description" onClick={() => toggleDescription(book.id)}>Show Less</button>
+              </>
+            ) : (
+              <button className="toggle-description" onClick={() => toggleDescription(book.id)}>Show More</button>
+            )}
+          </div>
+          {/* End collapsible description */}
+          {book.volumeInfo.imageLinks && <img className="book-image" src={book.volumeInfo.imageLinks.thumbnail} alt="Book cover" />}
+          <a className="book-link" href={book.volumeInfo.previewLink} target="_blank" rel="noopener noreferrer">Preview</a>
+          <button className="save-button" onClick={() => handleSaveBook(book)}>Save</button>
         </div>
       ))}
     </div>

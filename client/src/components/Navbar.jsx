@@ -1,25 +1,57 @@
-// Navbar.jsx
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Importing useNavigate
+import { Link } from 'react-router-dom';
 import { Navbar, Nav, Container, Modal, Tab, Form, Button } from 'react-bootstrap';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
+import SearchBooks from '../pages/SearchBooks';
+import { useMutation } from '@apollo/client';
+import { SAVE_BOOK } from "../../../server/schemas/mutations";
+import axios from 'axios'; // Import axios for making HTTP requests
+import '../App.css'; // Import custom styles
 
 const NavbarComponent = () => {
   const [showModal, setShowModal] = useState(false);
-  const [activeTab, setActiveTab] = useState('login'); // State to track active tab
+  const [activeTab, setActiveTab] = useState('login');
   const [searchTerm, setSearchTerm] = useState('');
-  const navigate = useNavigate();
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (searchTerm.trim()) {
-      navigate(`/search?q=${encodeURIComponent(searchTerm)}`); // Using navigate instead of useHistory.push
-    }
-  };
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchClicked, setSearchClicked] = useState(false); // State to track whether search button is clicked
+  const [saveBookMutation] = useMutation(SAVE_BOOK);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
+  };
+
+  const handleSearch = async (e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
+    if (searchTerm.trim()) {
+      // Perform search functionality here
+      try {
+        const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${searchTerm}`);
+        setSearchResults(response.data.items || []);
+        setSearchClicked(true); // Set searchClicked to true when search button is clicked
+      } catch (error) {
+        console.error('Error fetching search results:', error);
+      }
+    }
+  };
+
+  const handleSaveBook = async (book) => {
+    try {
+      await saveBookMutation({
+        variables: {
+          bookData: {
+            bookId: book.id,
+            authors: book.volumeInfo.authors,
+            title: book.volumeInfo.title,
+            description: book.volumeInfo.description,
+            image: book.volumeInfo.imageLinks.thumbnail,
+            link: book.volumeInfo.previewLink
+          }
+        }
+      });
+    } catch (error) {
+      console.error('Error saving book:', error);
+    }
   };
 
   return (
@@ -32,7 +64,7 @@ const NavbarComponent = () => {
           <Navbar.Toggle aria-controls='navbar' />
           <Navbar.Collapse id='navbar' className='d-flex flex-row-reverse'>
             <Nav className='ml-auto d-flex'>
-              <Form onSubmit={handleSearch} inline="true">
+              <Form inline="true" onSubmit={handleSearch}>
                 <Form.Control
                   type="text"
                   placeholder="Search books"
@@ -76,6 +108,8 @@ const NavbarComponent = () => {
           </Modal.Body>
         </Tab.Container>
       </Modal>
+      {/* Conditionally render SearchBooks component based on whether search button is clicked */}
+      {searchClicked && <SearchBooks searchTerm={searchTerm} searchResults={searchResults} />}
     </>
   );
 };

@@ -6,9 +6,9 @@ import SignupForm from './SignupForm';
 import SearchBooks from '../pages/SearchBooks';
 import { useMutation } from '@apollo/client';
 import { SAVE_BOOK } from "../../../server/schemas/mutations";
-import axios from 'axios'; // Import axios for making HTTP requests
 import Auth from '../utils/auth'; // Import Auth for token handling
 import '../App.css'; // Import custom styles
+import axios from 'axios';
 
 const NavbarComponent = () => {
   const [showModal, setShowModal] = useState(false);

@@ -1,4 +1,4 @@
-const LOGIN_USER = `
+export const LOGIN_USER = `
   mutation loginUser($email: String!, $password: String!) {
     login(email: $email, password: $password) {
       token
@@ -11,7 +11,7 @@ const LOGIN_USER = `
   }
 `;
 
-const ADD_USER = `
+export const ADD_USER = `
   mutation addUser($username: String!, $email: String!, $password: String!) {
     addUser(username: $username, email: $email, password: $password) {
       token
@@ -24,7 +24,7 @@ const ADD_USER = `
   }
 `;
 
-const SAVE_BOOK = `
+export const SAVE_BOOK = `
   mutation saveBook($bookData: BookInput!) {
     saveBook(bookData: $bookData) {
       _id
@@ -42,7 +42,7 @@ const SAVE_BOOK = `
   }
 `;
 
-const REMOVE_BOOK = `
+export const REMOVE_BOOK = `
   mutation removeBook($bookId: ID!) {
     removeBook(bookId: $bookId) {
       _id
@@ -59,5 +59,3 @@ const REMOVE_BOOK = `
     }
   }
 `;
-
-export { LOGIN_USER, ADD_USER, SAVE_BOOK, REMOVE_BOOK };

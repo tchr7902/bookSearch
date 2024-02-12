@@ -47,6 +47,13 @@ const SearchBooks = ({ searchTerm, searchResults, setSearchResults }) => {
     setExpandedBookId(expandedBookId === bookId ? null : bookId);
   };
 
+  const truncateDescription = (description, maxLength) => {
+    if (description.length > maxLength) {
+      return description.slice(0, maxLength) + "...";
+    }
+    return description;
+  };
+
   return (
     <div className="search-results">
       {/* Render search results if available */}
@@ -63,13 +70,18 @@ const SearchBooks = ({ searchTerm, searchResults, setSearchResults }) => {
                 <button className="toggle-description" onClick={() => toggleDescription(book.id)}>Show Less</button>
               </>
             ) : (
-              <button className="toggle-description" onClick={() => toggleDescription(book.id)}>Show More</button>
+              <>
+                <p>{truncateDescription(book.volumeInfo.description ? book.volumeInfo.description : 'N/A', 100)}</p>
+                <button className="toggle-description" onClick={() => toggleDescription(book.id)}>See More</button>
+              </>
             )}
           </div>
           {/* End collapsible description */}
           {book.volumeInfo.imageLinks && <img className="book-image" src={book.volumeInfo.imageLinks.thumbnail} alt="Book cover" />}
-          <a className="book-link" href={book.volumeInfo.previewLink} target="_blank" rel="noopener noreferrer">Preview</a>
-          <button className="save-button" onClick={() => handleSaveBook(book)}>Save</button>
+          <div className="book-buttons">
+            <a className="preview-button" href={book.volumeInfo.previewLink} target="_blank" rel="noopener noreferrer">Preview</a>
+            <button className="save-button" onClick={() => handleSaveBook(book)}>Save</button>
+          </div>
         </div>
       ))}
     </div>

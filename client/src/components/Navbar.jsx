@@ -58,23 +58,24 @@ const NavbarComponent = () => {
     <>
       <Navbar bg='dark' variant='dark' expand='lg'>
         <Container fluid>
-          <Navbar.Brand as={Link} to='/'>
+          <Navbar.Brand as={Link} to='/' className="brand">
             Google Books Search
           </Navbar.Brand>
           <Navbar.Toggle aria-controls='navbar' />
           <Navbar.Collapse id='navbar' className='d-flex flex-row-reverse'>
             <Nav className='ml-auto d-flex'>
-              <Form inline="true" onSubmit={handleSearch}>
+              <Form inline onSubmit={handleSearch} className="search-form">
                 <Form.Control
                   type="text"
                   placeholder="Search books"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
+                  className="search-input"
                 />
-                <Button variant="outline-light" type="submit">Search</Button>
+                <Button variant="outline-light" type="submit" className="search-button">Search</Button>
               </Form>
-              <Nav.Link as={Link} to='/saved'>Saved Books</Nav.Link>
-              <Nav.Link onClick={() => setShowModal(true)}>Login/Sign Up</Nav.Link>
+              <Nav.Link as={Link} to='/saved' className="nav-link">Saved Books</Nav.Link>
+              <Nav.Link onClick={() => setShowModal(true)} className="nav-link">Login/Sign Up</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>

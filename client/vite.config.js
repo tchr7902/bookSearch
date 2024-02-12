@@ -24,5 +24,8 @@ export default defineConfig({
     rollupOptions: {
       external: ['axios'],
     }
+  },
+  define: {
+    global: 'window'
   }
 });

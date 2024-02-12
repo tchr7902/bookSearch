@@ -24,7 +24,8 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      external: ['axios'] // Add 'axios' to the list of external dependencies
+      external: ['axios'],
+      external: ['@apollo/client']
     }
   }
 });

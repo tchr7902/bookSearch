@@ -25,7 +25,4 @@ export default defineConfig({
       external: ['axios'],
     }
   },
-  define: {
-    global: 'window'
-  }
 });

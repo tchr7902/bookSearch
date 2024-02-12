@@ -25,6 +25,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       external: ['axios', '@apollo/client'],
+      outDir: 'build',
 
     }
   }

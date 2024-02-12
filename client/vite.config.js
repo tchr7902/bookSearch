@@ -17,10 +17,10 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      // Add aliases for any modules you want to resolve
-      // These aliases are optional but can be useful for resolving module paths
+      // Add an alias for graphql-tag to resolve its path
+      'graphql-tag': require.resolve('graphql-tag'),
+      // Add an alias for react-router-dom to resolve module paths
       'react-router-dom': 'react-router-dom',
-      'graphql-tag': 'graphql-tag',
     },
   },
 });

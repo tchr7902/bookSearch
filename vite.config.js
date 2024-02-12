@@ -20,6 +20,7 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
+      input: '/server/server.js', // Specify the entry point here
       external: ['graphql-tag'],
     },
   },

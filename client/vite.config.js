@@ -14,6 +14,9 @@ export default defineConfig({
       }
     }
   },
+  optimizeDeps: {
+    include: ['graphql-tag'],
+  },
   resolve: {
     alias: {
       // Add an alias for react-router-dom to resolve module paths

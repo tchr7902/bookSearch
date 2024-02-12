@@ -17,8 +17,8 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      // Add an alias for graphql-tag to resolve its path
-      'graphql-tag': require.resolve('graphql-tag'),
+      // Add a relative path to graphql-tag module
+      'graphql-tag': './node_modules/graphql-tag/dist/graphql-tag.esm.js',
       // Add an alias for react-router-dom to resolve module paths
       'react-router-dom': 'react-router-dom',
     },

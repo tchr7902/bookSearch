@@ -5,6 +5,7 @@ import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 import SearchBooks from '../pages/SearchBooks';
 import { useMutation } from '@apollo/client';
+import { SAVE_BOOK } from "../../../server/schemas/mutations";
 import Auth from '../utils/auth'; // Import Auth for token handling
 import '../App.css'; // Import custom styles
 import axios from 'axios';
@@ -15,6 +16,7 @@ const NavbarComponent = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [searchClicked, setSearchClicked] = useState(false); // State to track whether search button is clicked
+  const [saveBookMutation] = useMutation(SAVE_BOOK);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -31,6 +33,26 @@ const NavbarComponent = () => {
       } catch (error) {
         console.error('Error fetching search results:', error);
       }
+    }
+  };
+
+  const handleSaveBook = async (book) => {
+    try {
+      await saveBookMutation({
+        variables: {
+          bookData: {
+            bookId: book.id,
+            authors: book.volumeInfo.authors,
+            title: book.volumeInfo.title,
+            description: book.volumeInfo.description,
+            image: book.volumeInfo.imageLinks.thumbnail,
+            link: book.volumeInfo.previewLink
+          }
+        },
+        context: { headers: { Authorization: `Bearer ${Auth.getToken()}` }} // Add token to the mutation context
+      });
+    } catch (error) {
+      console.error('Error saving book:', error);
     }
   };
 

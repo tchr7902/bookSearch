@@ -6,7 +6,7 @@ This is an application that allows the user to sign up for an account, log into 
 
 ## Installation and Usage
 
-(Here is a walkthrough video of the installation and usage of this application.)[]
+[Here is a walkthrough video of the installation and usage of this application.](https://drive.google.com/file/d/131ZLToeuUOc8RlLxef5Ag62Ut4HlKLFT/view)
 
 ## Credits
 

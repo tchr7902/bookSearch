@@ -7,9 +7,6 @@ export default defineConfig({
   build: {
     outDir: 'dist', // Specify the output directory for built assets
     rollupOptions: {
-      input: {
-        main: path.resolve(__dirname, 'src/main.jsx'), // Entry point for React application
-      },
     },
   },
 });

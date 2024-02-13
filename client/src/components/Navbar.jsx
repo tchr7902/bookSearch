@@ -5,7 +5,7 @@ import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 import SearchBooks from '../pages/SearchBooks';
 import { useMutation } from '@apollo/client';
-// import { SAVE_BOOK } from "../../../server/schemas/mutations";
+import { SAVE_BOOK } from "../../../server/schemas/mutations";
 import Auth from '../utils/auth'; // Import Auth for token handling
 import '../App.css'; // Import custom styles
 import axios from 'axios';
@@ -16,7 +16,7 @@ const NavbarComponent = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [searchClicked, setSearchClicked] = useState(false); // State to track whether search button is clicked
-  // const [saveBookMutation] = useMutation(SAVE_BOOK);
+  const [saveBookMutation] = useMutation(SAVE_BOOK);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -36,7 +36,7 @@ const NavbarComponent = () => {
     }
   };
 
- /* const handleSaveBook = async (book) => {
+ const handleSaveBook = async (book) => {
     try {
       await saveBookMutation({
         variables: {
@@ -55,7 +55,7 @@ const NavbarComponent = () => {
       console.error('Error saving book:', error);
     }
   };
-*/
+
   return (
     <>
       <Navbar bg='dark' variant='dark' expand='lg'>

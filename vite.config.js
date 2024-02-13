@@ -1,18 +1,15 @@
+import path from 'path';
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
+import react from '@vitejs/plugin-react'; // Import the React plugin
 
 export default defineConfig({
-  plugins: [
-    react(),
-  ],
-  server: {
-    port: 3000,
-    open: true,
-    proxy: {
-      '/api': 'http://localhost:3001',
-    },
-  },
+  plugins: [react()], // Use the React plugin
   build: {
-    outDir: 'dist',
+    outDir: 'dist', // Specify the output directory for built assets
+    rollupOptions: {
+      input: {
+        main: path.resolve(__dirname, 'src/main.jsx'), // Entry point for React application
+      },
+    },
   },
 });
